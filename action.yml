@@ -11,6 +11,7 @@ inputs:
     required: true
     description: "Sdk App Id"
   region:
+    required: true
     description: "Region"
   sms_sign:
     required: true

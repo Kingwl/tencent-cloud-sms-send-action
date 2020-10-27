@@ -16,9 +16,10 @@ jobs:
           secret_id: ${{ secrets.TEST_SECRET_ID }}
           secret_key: ${{ secrets.TEST_SECRET_KEY }}
           sdk_app_id: ${{ secrets.TEST_SDK_APP_ID }}
+          region: ${{ secrets.TEST_REGION }}
           sms_sign: ${{ secrets.TEST_SMS_SIGN }}
           sms_phones: ${{ secrets.TEST_SMS_PHONES }}
           sms_template_id: ${{ secrets.TEST_SMS_TEMPLATE_ID }}
           sms_template_params: ${{ secrets.TEST_SMS_TEMPLATE_PARAMS }}
       - name: Get the result
-        run: echo "The result was ${{ steps.roll.outputs.result }}"
+        run: echo "The result was ${{ steps.send.outputs.result }}"
