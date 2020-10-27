@@ -1,24 +1,22 @@
-name: 'build-test'
-on: # rebuild any PRs and main branch changes
-  pull_request:
-  push:
-    branches:
-      - main
-      - 'releases/*'
+name: 'action-test'
+on: [push]
 
 jobs:
-  build: # make sure build/ci work properly
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Tencent cloud sms send action
+        uses: ./
+        id: send
         with:
-          milliseconds: 1000
+          secret_id: ${{ secrets.TEST_SECRET_ID }}
+          secret_key: ${{ secrets.TEST_SECRET_KEY }}
+          sdk_app_id: ${{ secrets.TEST_SDK_APP_ID }}
+          sms_sign: ${{ secrets.TEST_SMS_SIGN }}
+          sms_phones: ${{ secrets.TEST_SMS_PHONES }}
+          sms_template_id: ${{ secrets.TEST_SMS_TEMPLATE_ID }}
+          sms_template_params: ${{ secrets.TEST_SMS_TEMPLATE_PARAMS }}
+      - name: Get the result
+        run: echo "The result was ${{ steps.roll.outputs.result }}"

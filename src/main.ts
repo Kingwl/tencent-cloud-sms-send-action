@@ -1,16 +1,58 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as tencentcloud from 'tencentcloud-sdk-nodejs'
+import {SendSmsRequest} from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20190711/sms_models'
+
+const smsClient = tencentcloud.sms.v20190711.Client
+
+function toStringArray(str: string): string[] {
+  try {
+    const result = JSON.parse(str)
+    if (Array.isArray(result)) {
+      return result as string[]
+    }
+  } catch {
+    // noop
+  }
+  return [str]
+}
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const secretId = core.getInput('secret_id')
+    const secretKey = core.getInput('secret_key')
+    const SmsSdkAppid = core.getInput('sdk_app_id')
+    const Sign = core.getInput('sms_sign')
+    const region = core.getInput('region') || ''
+    const PhoneNumberSet = toStringArray(core.getInput('sms_phones'))
+    const TemplateID = core.getInput('sms_template_id')
+    const TemplateParamSet = toStringArray(core.getInput('sms_template_params'))
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const client = new smsClient({
+      credential: {
+        secretId,
+        secretKey
+      },
+      region
+    })
 
-    core.setOutput('time', new Date().toTimeString())
+    const req: SendSmsRequest = {
+      SmsSdkAppid,
+      PhoneNumberSet,
+      TemplateID,
+      TemplateParamSet,
+      Sign
+    }
+
+    console.log('Start send sms')
+    client.SendSms(req, err => {
+      if (err) {
+        console.log('Send sms failed:', err)
+        core.setOutput('result', false)
+        return
+      }
+      console.log('Send sms done')
+      core.setOutput('result', true)
+    })
   } catch (error) {
     core.setFailed(error.message)
   }

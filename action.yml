@@ -1,11 +1,32 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Tencent Cloud SMS send action"
+description: "Send sms by tencent cloud sms api"
 inputs:
-  milliseconds: # change this
+  secret_id:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: "Secret Id"
+  secret_key:
+    required: true
+    description: "Secret Key"
+  sdk_app_id:
+    required: true
+    description: "Sdk App Id"
+  region:
+    description: "Region"
+  sms_sign:
+    required: true
+    description: "Registed sign"
+  sms_phones:
+    required: true
+    description: "Phones to send, must be list after stringify"
+  sms_template_id:
+    required: true
+    description: "Template to send"
+  sms_template_params:
+    required: true
+    description: "Template parameters to send, must be list after stringify"
+outputs:
+  result:
+    description: "Does the send request succeed"
 runs:
   using: 'node12'
   main: 'dist/index.js'
