@@ -50,8 +50,7 @@ async function run(): Promise<void> {
         core.setOutput('result', false)
         return
       }
-      // eslint:disable-next-line
-      console.log('Send sms done', (resp as any).to_json_string())
+      console.log('Send sms done', resp.SendStatusSet)
       core.setOutput('result', true)
     })
   } catch (error) {
