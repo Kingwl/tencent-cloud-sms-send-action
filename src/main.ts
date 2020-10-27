@@ -22,7 +22,7 @@ async function run(): Promise<void> {
     const secretKey = core.getInput('secret_key')
     const SmsSdkAppid = core.getInput('sdk_app_id')
     const Sign = core.getInput('sms_sign')
-    const region = core.getInput('region') || ''
+    const region = core.getInput('region') || undefined!
     const PhoneNumberSet = toStringArray(core.getInput('sms_phones'))
     const TemplateID = core.getInput('sms_template_id')
     const TemplateParamSet = toStringArray(core.getInput('sms_template_params'))
