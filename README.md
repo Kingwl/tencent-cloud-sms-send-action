@@ -5,7 +5,7 @@ Send sms by tencent cloud sms in github action.:rocket:
 
 ## Usage
 
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
+see [test.yml](.github/workflows/test.yml)
 
 ```yaml
 - name: Tencent cloud sms send action
