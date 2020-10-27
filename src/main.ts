@@ -44,13 +44,14 @@ async function run(): Promise<void> {
     }
 
     console.log('Start send sms')
-    client.SendSms(req, err => {
+    client.SendSms(req, (err, resp) => {
       if (err) {
         console.log('Send sms failed:', err)
         core.setOutput('result', false)
         return
       }
-      console.log('Send sms done')
+      // eslint:disable-next-line
+      console.log('Send sms done', (resp as any).to_json_string())
       core.setOutput('result', true)
     })
   } catch (error) {
